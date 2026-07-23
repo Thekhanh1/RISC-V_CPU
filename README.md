@@ -21,16 +21,27 @@ This is a repo to document my RISC-V learning proccess, with my final goal being
 |  1001   |   SLTU    |
 
 </td>
+
 <td valign="top">
 
-| ALUop |   explanation    |
-| :---: | :--------------: |
-|  00   |    forced ADD    |
-|  01   |    forced SUB    |
-|  10   | look at funct3/7 |
-|  11   |      unused      |
+| ALUop |     explanation     |
+| :---: |   :-------------:   |
+|  00   |      forced ADD     |
+|  01   |      forced SUB     |
+|  10   | look at funct3/7(R) |
+|  11   | look at funct3/7(I) |
+
+<br>
+
+| PCSrc |     explanation     |
+| :---: |     :---------:     |
+|  00   |       PC + 4        |
+|  01   |     jal / branch    |
+|  10   |        jalr         |
+|  11   |       unused        |
 
 </td>
+
 <td valign="top">
 
 | ResultSrc | explanation |
@@ -45,17 +56,17 @@ This is a repo to document my RISC-V learning proccess, with my final goal being
 </table>
 
 ### Main decoder
-| group[i] | name[i] |   op[i]   | ALUSrc[o] | memWE[o] | regWE[o] | immSrc[o] | ResultSrc[o] | ALUop[o] | branch[o] | jump[o] |
-| :------: | :-----: | :-------: | :-------: | :------: | :------: | :-------: | :----------: | :------: | :-------: | :-----: |
-|    R     | normal  |  0110011  |     0     |    0     |    1     |     R     |      00      |    10    |     0     |    0    |
-|    I     | normal  |  0010011  |     1     |    0     |    1     |     I     |      00      |    10    |     0     |    0    |
-|    I     |  load   |  0000011  |     1     |    0     |    1     |     I     |      01      |    00    |     0     |    0    |
-|    I     |  jalr   |  1100111  |     1     |    0     |    1     |     I     |      10      |    00    |     0     |    1    |
-|    S     |  store  |  0100011  |     1     |    1     |    0     |     S     |      00      |    00    |     0     |    0    |
-|    B     | branch  |  1100011  |     0     |    0     |    0     |     B     |      00      |    01    |     1     |    0    |
-|    J     |  jump   |  1101111  |     1     |    0     |    1     |     J     |      10      |    00    |     0     |    1    |
-|    U     |   lui   |  0110111  |     1     |    0     |    1     |     U     |      00      |    00    |     0     |    0    |
-|    U     |  auipc  |  0010111  |     1     |    0     |    1     |     U     |      00      |    00    |     0     |    0    |
+| group[i] | name[i] |   op[i]   | ALUSrc[o] | memWE[o] | regWE[o] | immSrc[o] | ResultSrc[o] | ALUop[o] | branch[o] |  jump[o] |
+| :------: | :-----: | :-------: | :-------: | :------: | :------: | :-------: | :----------: | :------: | :-------: |  :----:  |
+|    R     | normal  |  0110011  |     0     |    0     |    1     |     R     |      00      |    10    |     0     |    00    |
+|    I     | normal  |  0010011  |     1     |    0     |    1     |     I     |      00      |    10    |     0     |    00    |
+|    I     |  load   |  0000011  |     1     |    0     |    1     |     I     |      01      |    00    |     0     |    00    |
+|    I     |  jalr   |  1100111  |     1     |    0     |    1     |     I     |      10      |    00    |     0     |    01    |
+|    S     |  store  |  0100011  |     1     |    1     |    0     |     S     |      00      |    00    |     0     |    00    |
+|    B     | branch  |  1100011  |     0     |    0     |    0     |     B     |      00      |    01    |     1     |    00    |
+|    J     |  jump   |  1101111  |     1     |    0     |    1     |     J     |      10      |    00    |     0     |    10    |
+|    U     |   lui   |  0110111  |     1     |    0     |    1     |     U     |      00      |    00    |     0     |    00    |
+|    U     |  auipc  |  0010111  |     1     |    0     |    1     |     U     |      00      |    00    |     0     |    00    |
 
 
 ### ALU decoder
@@ -98,4 +109,16 @@ This is a repo to document my RISC-V learning proccess, with my final goal being
 |    J     |   jal   |    0x0    |   0x00    |    00    |    0000    |
 |    U     |   lui   |    0x0    |   0x00    |    00    |    0000    |
 |    U     |  auipc  |    0x0    |   0x00    |    00    |    0000    |
+
+
 ### branch logic
+| name  | branch[i] | jump[i] | zero[i] | less[i] | lessU[i] | funct3[i] | PCSrc[o] |
+| :---- | :-------: | :-----: | :-----: | :-----: | :------: | :-------: | :------: |
+| beq   |     1     |   00    |    1    |    x    |    x     |    0x0    |    01    |
+| bne   |     1     |   00    |    0    |    x    |    x     |    0x1    |    01    |
+| blt   |     1     |   00    |    x    |    1    |    x     |    0x4    |    01    |
+| bge   |     1     |   00    |    x    |    0    |    x     |    0x5    |    01    |
+| bltu  |     1     |   00    |    x    |    x    |    1     |    0x6    |    01    |
+| bgeu  |     1     |   00    |    x    |    x    |    0     |    0x7    |    01    |
+| jal   |     0     |   01    |    x    |    x    |    x     |     -     |    01    |
+| jalr  |     0     |   10    |    x    |    x    |    x     |    0x0    |    10    |
