@@ -31,15 +31,17 @@
 `define SLTU 4'b1001
 
 module RV32I_ALU (
-    input [3:0] ALUSrc,
+    input [3:0] ALUCtrl,
     input [31:0] srcA,
     input [31:0] srcB,
     output reg [31:0] ALUResult,
-    output reg zero
+    output wire zero,
+    output wire less,
+    output wire lessU
 );
 
   always @(*) begin
-    case (ALUSrc)
+    case (ALUCtrl)
       `ADD: begin
         ALUResult = srcA + srcB;
       end
@@ -82,8 +84,8 @@ module RV32I_ALU (
         ALUResult = 32'h00000000;
       end
     endcase
-    zero = (ALUResult == 32'b0);
   end
-
-
+  assign zero  = (ALUResult == 32'b0);
+  assign less  = ($signed(srcA) < $signed(srcB));
+  assign lessU = (srcA < srcB);
 endmodule

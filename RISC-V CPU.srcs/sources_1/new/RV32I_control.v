@@ -21,6 +21,18 @@
 
 
 module RV32I_control (
+    input zero,
+    input [31:0] instr,
+    output [3:0] ALUCtrl,
+    output [1:0] resultSrc,
+    output [2:0] immSrc,
+    output PCSrc,
+    output ALUSrc,
+    output memWE,
+    output regWE
+);
 
-    );
+
+
+
 endmodule

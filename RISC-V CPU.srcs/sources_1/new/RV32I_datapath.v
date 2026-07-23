@@ -25,14 +25,14 @@ module RV32I_datapath (
     input rst,
     input regWrite,
     input ALUSrc,
-
-    input regSrc,
     input PCSrc,
     input [1:0] resultSrc,
     input [3:0] ALUCtrl,
     input [2:0] immSrc,
     input [31:0] Instr,
     input [31:0] readData,
+
+
     output [31:0] PC,
     output [31:0] ALUResult,
     output [31:0] dataWrite,
@@ -58,7 +58,7 @@ module RV32I_datapath (
   );
 
   RV32I_ALU u_RV32I_ALU (
-      .ALUSrc(ALUCtrl),
+      .ALUCtrl(ALUCtrl),
       .SrcA(SrcA),
       .SrcB(SrcB),
       .ALUResult(ALUResult),

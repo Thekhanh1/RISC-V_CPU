@@ -18,11 +18,11 @@
 // Additional Comments:
 // 436
 //////////////////////////////////////////////////////////////////////////////////
-`define I 3'b000
-`define S 3'b001
-`define B 3'b010
-`define U 3'b011
-`define J 3'b100
+`define I 3'b001
+`define S 3'b010
+`define B 3'b011
+`define U 3'b100
+`define J 3'b101
 
 module RV32I_extend (
     input [31:0] immField,
@@ -52,7 +52,7 @@ module RV32I_extend (
         immExt = {{12{immField[31]}}, immField[19:12], immField[20], immField[30:21], 1'b0};
       end
 
-      3'b101: begin
+      3'b000: begin
         immExt = 32'h00000000;
       end
 
