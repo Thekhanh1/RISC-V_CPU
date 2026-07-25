@@ -49,7 +49,7 @@ This is a repo to document my RISC-V learning proccess, with my final goal being
 |    00     |  ALUResult  |
 |    01     |  readData   |
 |    10     |   PCPlus4   |
-|    11     |   unused    |
+|    11     |     LUI     |
 
 </td>
 </tr>
@@ -61,10 +61,10 @@ This is a repo to document my RISC-V learning proccess, with my final goal being
 |    R     | normal  |  0110011  |     0     |    0     |    1     |     R     |      00      |    10    |     0     |    00    |
 |    I     | normal  |  0010011  |     1     |    0     |    1     |     I     |      00      |    10    |     0     |    00    |
 |    I     |  load   |  0000011  |     1     |    0     |    1     |     I     |      01      |    00    |     0     |    00    |
-|    I     |  jalr   |  1100111  |     1     |    0     |    1     |     I     |      10      |    00    |     0     |    01    |
+|    I     |  jalr   |  1100111  |     1     |    0     |    1     |     I     |      10      |    00    |     0     |    10    |
 |    S     |  store  |  0100011  |     1     |    1     |    0     |     S     |      00      |    00    |     0     |    00    |
 |    B     | branch  |  1100011  |     0     |    0     |    0     |     B     |      00      |    01    |     1     |    00    |
-|    J     |  jump   |  1101111  |     1     |    0     |    1     |     J     |      10      |    00    |     0     |    10    |
+|    J     |  jump   |  1101111  |     1     |    0     |    1     |     J     |      10      |    00    |     0     |    01    |
 |    U     |   lui   |  0110111  |     1     |    0     |    1     |     U     |      00      |    00    |     0     |    00    |
 |    U     |  auipc  |  0010111  |     1     |    0     |    1     |     U     |      00      |    00    |     0     |    00    |
 
