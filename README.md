@@ -112,13 +112,19 @@ This is a repo to document my RISC-V learning proccess, with my final goal being
 
 
 ### branch logic
-| name  | branch[i] | jump[i] | zero[i] | less[i] | lessU[i] | funct3[i] | PCSrc[o] |
-| :---- | :-------: | :-----: | :-----: | :-----: | :------: | :-------: | :------: |
-| beq   |     1     |   00    |    1    |    x    |    x     |    0x0    |    01    |
-| bne   |     1     |   00    |    0    |    x    |    x     |    0x1    |    01    |
-| blt   |     1     |   00    |    x    |    1    |    x     |    0x4    |    01    |
-| bge   |     1     |   00    |    x    |    0    |    x     |    0x5    |    01    |
-| bltu  |     1     |   00    |    x    |    x    |    1     |    0x6    |    01    |
-| bgeu  |     1     |   00    |    x    |    x    |    0     |    0x7    |    01    |
-| jal   |     0     |   01    |    x    |    x    |    x     |     -     |    01    |
-| jalr  |     0     |   10    |    x    |    x    |    x     |    0x0    |    10    |
+|     name[i]    | branch[i]  | jump[i]  | branch taken[i] | PCSrc[o] |
+|----------------|:----------:|:--------:|:---------------:|:--------:|
+| normal         |     0      |    00    |        x        |    00    |
+| jal            |     x      |    01    |        x        |    01    |
+| jalr           |     x      |    10    |        x        |    10    |
+| branch         |     1      |    00    |        1        |    00    |
+| don't branch   |     1      |    00    |        0        |    00    |
+
+|  name[i]  | funct3[i] | branch taken[o] |
+|-----------|:---------:|:---------------:|
+| beq       |    0x0    |      zero       |
+| bne       |    0x1    |      ~zero      |
+| blt       |    0x4    |      less       |
+| bge       |    0x5    |      ~less      |
+| bltu      |    0x6    |      lessU      |
+| bgeu      |    0x7    |      ~lessU     |
