@@ -19,17 +19,6 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-`define ADD 4'b0000
-`define SUB 4'b0001
-`define AND 4'b0010
-`define OR 4'b0011
-`define XOR 4'b0100
-`define SLL 4'b0101
-`define SRL 4'b0110
-`define SRA 4'b0111
-`define SLT 4'b1000
-`define SLTU 4'b1001
-
 module RV32I_ALU (
     input [3:0] ALUCtrl,
     input [31:0] srcA,
@@ -40,49 +29,42 @@ module RV32I_ALU (
     output wire lessU
 );
 
+  localparam [3:0] ADD = 4'b0000;
+  localparam [3:0] SUB = 4'b0001;
+  localparam [3:0] AND = 4'b0010;
+  localparam [3:0] OR = 4'b0011;
+  localparam [3:0] XOR = 4'b0100;
+  localparam [3:0] SLL = 4'b0101;
+  localparam [3:0] SRL = 4'b0110;
+  localparam [3:0] SRA = 4'b0111;
+  localparam [3:0] SLT = 4'b1000;
+  localparam [3:0] SLTU = 4'b1001;
+
   always @(*) begin
     case (ALUCtrl)
-      `ADD: begin
-        ALUResult = srcA + srcB;
-      end
-      `SUB: begin
-        ALUResult = srcA - srcB;
-      end
-      `AND: begin
-        ALUResult = srcA & srcB;
-      end
-      `OR: begin
-        ALUResult = srcA | srcB;
-      end
-      `XOR: begin
-        ALUResult = srcA ^ srcB;
-      end
-      `SLL: begin
-        ALUResult = srcA << srcB[4:0];
-      end
-      `SRL: begin
-        ALUResult = srcA >> srcB[4:0];
-      end
-      `SRA: begin
-        ALUResult = $signed(srcA) >>> srcB[4:0];
-      end
-      `SLT: begin
+      ADD: ALUResult = srcA + srcB;
+      SUB: ALUResult = srcA - srcB;
+      AND: ALUResult = srcA & srcB;
+      OR: ALUResult = srcA | srcB;
+      XOR: ALUResult = srcA ^ srcB;
+      SLL: ALUResult = srcA << srcB[4:0];
+      SRL: ALUResult = srcA >> srcB[4:0];
+      SRA: ALUResult = $signed(srcA) >>> srcB[4:0];
+      SLT: begin
         if ($signed(srcA) < $signed(srcB)) begin
           ALUResult = 1;
         end else begin
           ALUResult = 0;
         end
       end
-      `SLTU: begin
+      SLTU: begin
         if (srcA < srcB) begin
           ALUResult = 1;
         end else begin
           ALUResult = 0;
         end
       end
-      default: begin
-        ALUResult = 32'h00000000;
-      end
+      default: ALUResult = 32'h00000000;
     endcase
   end
   assign zero  = (ALUResult == 32'b0);

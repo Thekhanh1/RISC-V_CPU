@@ -117,7 +117,7 @@ This is a repo to document my RISC-V learning proccess, with my final goal being
 | normal         |     0      |    00    |        x        |    00    |
 | jal            |     x      |    01    |        x        |    01    |
 | jalr           |     x      |    10    |        x        |    10    |
-| branch         |     1      |    00    |        1        |    00    |
+| branch         |     1      |    00    |        1        |    01    |
 | don't branch   |     1      |    00    |        0        |    00    |
 
 |  name[i]  | funct3[i] | branch taken[o] |
