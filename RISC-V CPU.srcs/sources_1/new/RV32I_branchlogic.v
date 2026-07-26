@@ -20,7 +20,28 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module RV32I_branchlogic(
+module RV32I_branchlogic (
+    input branch,
+    input zero,
+    input less,
+    input lessU,
+    input [2:0] funct3,
+    input [1:0] jump,
+    output reg [1:0] PCSrc
+);
+  wire branchTaken = (funct3 == 3'b000) ?  zero :
+                      (funct3 == 3'b001) ? ~zero :
+                      (funct3 == 3'b100) ?  less :
+                      (funct3 == 3'b101) ? ~less :
+                      (funct3 == 3'b110) ?  lessU :
+                      (funct3 == 3'b111) ? ~lessU :
+                      1'b0;
 
-    );
+  always @(*) begin
+    case (jump)
+      2'b01:   PCSrc = 2'b01;
+      2'b10:   PCSrc = 2'b10;
+      default: PCSrc = (branch && branchTaken) ? 2'b01 : 2'b00;
+    endcase
+  end
 endmodule
