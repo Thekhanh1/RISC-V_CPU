@@ -62,9 +62,11 @@ module RV32I_control (
   );
 
   RV32I_branchlogic u_RV32I_branchlogic (
-      .funct3(funct3),
-      .branchTaken(branchTaken),
       .branch(branch),
+      .zero(zero),
+      .less(less),
+      .lessU(lessU),
+      .funct3(funct3),
       .jump(jump),
       .pcSrc(pcSrc)
   );
