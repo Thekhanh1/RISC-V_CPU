@@ -49,15 +49,15 @@ module RV32I_maindecoder (
       R_NORM:   control = 13'b0_0_1_000_00_10_0_00;
       I_NORM:   control = 13'b1_0_1_001_00_11_0_00;
       I_LOAD:   control = 13'b1_0_1_001_01_00_0_00;
-      I_JALR:   control = 13'b1_0_1_001_10_00_0_01;
+      I_JALR:   control = 13'b1_0_1_001_10_00_0_10;
       S_STORE:  control = 13'b1_1_0_010_00_00_0_00;
       B_BRANCH: control = 13'b0_0_0_011_00_01_1_00;
-      J_JAL:    control = 13'b1_0_1_101_10_00_0_10;
-      U_LUI:    control = 13'b1_0_1_100_00_00_0_00;
+      J_JAL:    control = 13'b1_0_1_101_10_00_0_01;
+      U_LUI:    control = 13'b1_0_1_100_11_00_0_00;
       U_AUIPC:  control = 13'b1_0_1_100_00_00_0_00;
 
       default: control = 13'b0_0_0_000_00_00_0_00;
     endcase
   end
-  assign {aluSrc, memWe, regWe, immSrc, resultSrc, aluOp, jump, branch} = control;
+  assign {aluSrc, memWe, regWe, immSrc, resultSrc, aluOp, branch, jump} = control;
 endmodule
