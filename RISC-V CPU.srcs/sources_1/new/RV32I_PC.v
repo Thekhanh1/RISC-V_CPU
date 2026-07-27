@@ -23,15 +23,15 @@
 module RV32I_PC (
     input clk,
     input rst,
-    input [31:0] PCnext,
-    output reg [31:0] PC
+    input [31:0] pcNext,
+    output reg [31:0] pc
 );
 
   always @(posedge clk) begin
     if (rst) begin
-      PC <= 32'h00000000;
+      pc <= 32'h00000000;
     end else begin
-      PC <= PCnext;
+      pc <= pcNext;
     end
   end
 endmodule

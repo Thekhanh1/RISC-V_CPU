@@ -21,13 +21,13 @@
 
 
 module RV32I_maindecoder (
-    input [6:0] opcode,
-    output ALUSrc,
-    output memWE,
-    output regWE,
+    input [6:0] opCode,
+    output aluSrc,
+    output memWe,
+    output regWe,
     output [2:0] immSrc,
     output [1:0] resultSrc,
-    output [1:0] ALUop,
+    output [1:0] aluOp,
     output [1:0] jump,
     output branch
 );
@@ -45,7 +45,7 @@ module RV32I_maindecoder (
   reg [12:0] control;
 
   always @(*) begin
-    case (opcode)
+    case (opCode)
       R_NORM:   control = 13'b0_0_1_000_00_10_0_00;
       I_NORM:   control = 13'b1_0_1_001_00_11_0_00;
       I_LOAD:   control = 13'b1_0_1_001_01_00_0_00;
@@ -59,5 +59,5 @@ module RV32I_maindecoder (
       default: control = 13'b0_0_0_000_00_00_0_00;
     endcase
   end
-  assign {ALUSrc, memWE, regWE, immSrc, resultSrc, ALUop, jump, branch} = control;
+  assign {aluSrc, memWe, regWe, immSrc, resultSrc, aluOp, jump, branch} = control;
 endmodule

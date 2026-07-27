@@ -20,10 +20,10 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module RV32I_ALU (
-    input [3:0] ALUCtrl,
+    input [3:0] aluCtrl,
     input [31:0] srcA,
     input [31:0] srcB,
-    output reg [31:0] ALUResult,
+    output reg [31:0] aluResult,
     output wire zero,
     output wire less,
     output wire lessU
@@ -41,33 +41,33 @@ module RV32I_ALU (
   localparam [3:0] SLTU = 4'b1001;
 
   always @(*) begin
-    case (ALUCtrl)
-      ADD: ALUResult = srcA + srcB;
-      SUB: ALUResult = srcA - srcB;
-      AND: ALUResult = srcA & srcB;
-      OR: ALUResult = srcA | srcB;
-      XOR: ALUResult = srcA ^ srcB;
-      SLL: ALUResult = srcA << srcB[4:0];
-      SRL: ALUResult = srcA >> srcB[4:0];
-      SRA: ALUResult = $signed(srcA) >>> srcB[4:0];
+    case (aluCtrl)
+      ADD: aluResult = srcA + srcB;
+      SUB: aluResult = srcA - srcB;
+      AND: aluResult = srcA & srcB;
+      OR: aluResult = srcA | srcB;
+      XOR: aluResult = srcA ^ srcB;
+      SLL: aluResult = srcA << srcB[4:0];
+      SRL: aluResult = srcA >> srcB[4:0];
+      SRA: aluResult = $signed(srcA) >>> srcB[4:0];
       SLT: begin
         if ($signed(srcA) < $signed(srcB)) begin
-          ALUResult = 1;
+          aluResult = 1;
         end else begin
-          ALUResult = 0;
+          aluResult = 0;
         end
       end
       SLTU: begin
         if (srcA < srcB) begin
-          ALUResult = 1;
+          aluResult = 1;
         end else begin
-          ALUResult = 0;
+          aluResult = 0;
         end
       end
-      default: ALUResult = 32'h00000000;
+      default: aluResult = 32'h00000000;
     endcase
   end
-  assign zero  = (ALUResult == 32'b0);
+  assign zero  = (aluResult == 32'b0);
   assign less  = ($signed(srcA) < $signed(srcB));
   assign lessU = (srcA < srcB);
 endmodule

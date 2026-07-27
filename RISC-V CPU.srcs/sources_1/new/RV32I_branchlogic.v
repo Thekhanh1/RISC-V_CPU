@@ -27,7 +27,7 @@ module RV32I_branchlogic (
     input lessU,
     input [2:0] funct3,
     input [1:0] jump,
-    output reg [1:0] PCSrc
+    output reg [1:0] pcSrc
 );
   wire branchTaken = (funct3 == 3'b000) ?  zero :
                       (funct3 == 3'b001) ? ~zero :
@@ -39,9 +39,9 @@ module RV32I_branchlogic (
 
   always @(*) begin
     case (jump)
-      2'b01:   PCSrc = 2'b01;
-      2'b10:   PCSrc = 2'b10;
-      default: PCSrc = (branch && branchTaken) ? 2'b01 : 2'b00;
+      2'b01:   pcSrc = 2'b01;
+      2'b10:   pcSrc = 2'b10;
+      default: pcSrc = (branch && branchTaken) ? 2'b01 : 2'b00;
     endcase
   end
 endmodule
