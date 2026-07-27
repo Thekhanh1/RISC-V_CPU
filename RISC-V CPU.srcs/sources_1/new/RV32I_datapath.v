@@ -67,9 +67,9 @@ module RV32I_datapath (
 
   RV32I_regfile u_RV32I_regfile (
       .clk(clk),
-      .A1 (instr[19:15]),
-      .A2 (instr[24:20]),
-      .A3 (instr[11:7]),
+      .A1(instr[19:15]),
+      .A2(instr[24:20]),
+      .A3(instr[11:7]),
       .WD3(resultOut),
       .WE3(regWrite),
       .RD1(srcA),
@@ -78,8 +78,8 @@ module RV32I_datapath (
 
   RV32I_extend u_RV32I_extend (
       .immField(instr),
-      .immSrc  (immSrc),
-      .immExt  (immExt)
+      .immSrc(immSrc),
+      .immExt(immExt)
   );
 
 endmodule
