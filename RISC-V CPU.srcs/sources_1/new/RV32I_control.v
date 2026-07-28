@@ -32,7 +32,7 @@ module RV32I_control (
     output memWe,
     output regWe,
     output [2:0] immSrc,
-    output [1:0] resultSrc,
+    output [2:0] resultSrc,
     output [3:0] aluCtrl,
     output [1:0] pcSrc
 );

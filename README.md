@@ -46,10 +46,11 @@ This is a repo to document my RISC-V learning proccess, with my final goal being
 
 | ResultSrc | explanation |
 | :-------: | :---------: |
-|    00     |  ALUResult  |
-|    01     |  readData   |
-|    10     |   PCPlus4   |
-|    11     |     LUI     |
+|    000    |  ALUResult  |
+|    001    |  readData   |
+|    010    |   PCPlus4   |
+|    011    |     LUI     |
+|    100    |    AUIPC    |
 
 </td>
 </tr>

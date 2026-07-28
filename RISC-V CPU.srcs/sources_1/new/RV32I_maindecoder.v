@@ -26,7 +26,7 @@ module RV32I_maindecoder (
     output memWe,
     output regWe,
     output [2:0] immSrc,
-    output [1:0] resultSrc,
+    output [2:0] resultSrc,
     output [1:0] aluOp,
     output [1:0] jump,
     output branch
@@ -42,21 +42,21 @@ module RV32I_maindecoder (
   localparam [6:0] U_AUIPC = 7'b0010111;
   localparam [6:0] J_JAL = 7'b1101111;
 
-  reg [12:0] control;
+  reg [13:0] control;
 
   always @(*) begin
     case (opCode)
-      R_NORM:   control = 13'b0_0_1_000_00_10_0_00;
-      I_NORM:   control = 13'b1_0_1_001_00_11_0_00;
-      I_LOAD:   control = 13'b1_0_1_001_01_00_0_00;
-      I_JALR:   control = 13'b1_0_1_001_10_00_0_10;
-      S_STORE:  control = 13'b1_1_0_010_00_00_0_00;
-      B_BRANCH: control = 13'b0_0_0_011_00_01_1_00;
-      J_JAL:    control = 13'b1_0_1_101_10_00_0_01;
-      U_LUI:    control = 13'b1_0_1_100_11_00_0_00;
-      U_AUIPC:  control = 13'b1_0_1_100_00_00_0_00;
+      R_NORM:   control = 14'b0_0_1_000_000_10_0_00;
+      I_NORM:   control = 14'b1_0_1_001_000_11_0_00;
+      I_LOAD:   control = 14'b1_0_1_001_001_00_0_00;
+      I_JALR:   control = 14'b1_0_1_001_010_00_0_10;
+      S_STORE:  control = 14'b1_1_0_010_000_00_0_00;
+      B_BRANCH: control = 14'b0_0_0_011_000_01_1_00;
+      J_JAL:    control = 14'b1_0_1_101_010_00_0_01;
+      U_LUI:    control = 14'b1_0_1_100_011_00_0_00;
+      U_AUIPC:  control = 14'b1_0_1_100_100_00_0_00;
 
-      default: control = 13'b0_0_0_000_00_00_0_00;
+      default: control = 14'b0_0_0_000_000_00_0_00;
     endcase
   end
   assign {aluSrc, memWe, regWe, immSrc, resultSrc, aluOp, branch, jump} = control;

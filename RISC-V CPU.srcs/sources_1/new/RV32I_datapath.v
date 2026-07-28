@@ -26,7 +26,7 @@ module RV32I_datapath (
     input regWrite,
     input aluSrc,
     input [1:0] pcSrc,
-    input [1:0] resultSrc,
+    input [2:0] resultSrc,
     input [3:0] aluCtrl,
     input [2:0] immSrc,
     input [31:0] instr,
@@ -44,10 +44,16 @@ module RV32I_datapath (
   wire [31:0] srcB = (aluSrc == 1'b1) ? immExt : dataWrite;
   wire [31:0] pcTarget = immExt + pc;
   wire [31:0] pcPlus4 = pc + 4;
-  wire [31:0] pcNext = (pcSrc == 1'b1) ? pcTarget : pcPlus4;
-  wire [31:0] resultOut = (resultSrc == 2'b00) ? aluResult :
-                            (resultSrc == 2'b01) ? readData :
-                            (resultSrc == 2'b10) ? pcPlus4 : 32'b0;
+  wire [31:0] pclinkReg = immExt + srcA;
+  wire [31:0] pcNext = (pcSrc == 2'b00) ? pcPlus4   :
+                       (pcSrc == 2'b01) ? pcTarget  : 
+                       (pcSrc == 2'b10) ? pclinkReg :
+                       0;
+  wire [31:0] resultOut = (resultSrc == 3'b000) ? aluResult :
+                          (resultSrc == 3'b001) ? readData  :
+                          (resultSrc == 3'b010) ? pcPlus4   : 
+                          (resultSrc == 3'b011) ? immExt    : 
+                          pcTarget;
 
 
   RV32I_PC u_RV32I_PC (
