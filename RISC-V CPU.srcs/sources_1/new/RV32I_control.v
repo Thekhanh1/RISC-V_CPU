@@ -37,7 +37,6 @@ module RV32I_control (
     output [1:0] pcSrc
 );
 
-  wire branchTaken;
   wire branch;
   wire [1:0] jump;
   wire [1:0] aluOp;

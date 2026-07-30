@@ -36,7 +36,9 @@ module RV32I_datapath (
     output [31:0] pc,
     output [31:0] aluResult,
     output [31:0] dataWrite,
-    output zero
+    output zero,
+    output less,
+    output lessU
 );
 
   wire [31:0] immExt;
@@ -68,7 +70,9 @@ module RV32I_datapath (
       .srcA(srcA),
       .srcB(srcB),
       .aluResult(aluResult),
-      .zero(zero)
+      .zero(zero),
+      .less(less),
+      .lessU(lessU)
   );
 
   RV32I_regfile u_RV32I_regfile (
