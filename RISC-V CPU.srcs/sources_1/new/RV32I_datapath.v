@@ -41,9 +41,11 @@ module RV32I_datapath (
     output lessU
 );
 
+  wire [31:0] rd2;
+  wire [31:0] loadResult;
   wire [31:0] immExt;
   wire [31:0] srcA;
-  wire [31:0] srcB = (aluSrc == 1'b1) ? immExt : dataWrite;
+  wire [31:0] srcB = (aluSrc == 1'b1) ? immExt : rd2;
   wire [31:0] pcTarget = immExt + pc;
   wire [31:0] pcPlus4 = pc + 4;
   wire [31:0] pclinkReg = immExt + srcA;
@@ -52,7 +54,7 @@ module RV32I_datapath (
                        (pcSrc == 2'b10) ? pclinkReg :
                        0;
   wire [31:0] resultOut = (resultSrc == 3'b000) ? aluResult :
-                          (resultSrc == 3'b001) ? readData  :
+                          (resultSrc == 3'b001) ? loadResult :
                           (resultSrc == 3'b010) ? pcPlus4   : 
                           (resultSrc == 3'b011) ? immExt    : 
                           pcTarget;
@@ -83,13 +85,22 @@ module RV32I_datapath (
       .WD3(resultOut),
       .WE3(regWrite),
       .RD1(srcA),
-      .RD2(dataWrite)
+      .RD2(rd2)
   );
 
   RV32I_extend u_RV32I_extend (
       .immField(instr),
       .immSrc(immSrc),
       .immExt(immExt)
+  );
+
+  RV32I_loadstore u_RV32I_loadstore (
+      .aluResult(aluResult),
+      .rd2(rd2),
+      .readData(readData),
+      .instr(instr),
+      .dataWrite(dataWrite),
+      .loadResult(loadResult)
   );
 
 endmodule
