@@ -23,6 +23,7 @@
 module RV32I_exmem (
     input clk,
     input memWe,
+    input [31:0] pc,
     input [31:0] aluResult,
     input [31:0] writeData,
     output reg [31:0] readData,
@@ -30,7 +31,7 @@ module RV32I_exmem (
 );
 
   RV32I_imem u_RV32I_imem (
-      .aluResult(aluResult),
+      .pc(pc),
       .instr(instr)
   );
 
