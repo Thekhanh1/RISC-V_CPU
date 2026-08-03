@@ -21,6 +21,16 @@
 
 
 module RV32I_imem (
+    input [31:0] aluResult,
+    output reg [31:0] instr
+);
 
-    );
+  reg [31:0] instrRom[0:255];
+
+  initial begin
+    $readmemh("program.hex", instrRom);
+  end
+  always @(*) begin
+    instr = instrRom[aluResult>>2];
+  end
 endmodule

@@ -21,6 +21,22 @@
 
 
 module RV32I_dmem (
+    input clk,
+    input memWe,
+    input [31:0] aluResult,
+    input [31:0] writeData,
+    output reg [31:0] readData
+);
 
-    );
+  reg [31:0] dataRam[0:255];
+
+  always @(*) begin
+    readData = dataRam[aluResult>>2];
+  end
+
+  always @(posedge clk) begin
+    if (memWe == 1'b1) begin
+      dataRam[aluResult>>2] <= writeData;
+    end
+  end
 endmodule
