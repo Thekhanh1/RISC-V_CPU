@@ -28,7 +28,7 @@ module RV32I_imem (
   reg [31:0] instrRom[0:255];
 
   initial begin
-    $readmemh("program.hex", instrRom);
+    $readmemh("RV32I_program.hex", instrRom);
   end
   always @(*) begin
     instr = instrRom[pc>>2];
