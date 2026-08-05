@@ -53,10 +53,10 @@ module RV32I_datapath (
                        (pcSrc == 2'b01) ? pcTarget  : 
                        (pcSrc == 2'b10) ? pclinkReg :
                        0;
-  wire [31:0] resultOut = (resultSrc == 3'b000) ? aluResult :
+  wire [31:0] resultOut = (resultSrc == 3'b000) ? aluResult  :
                           (resultSrc == 3'b001) ? loadResult :
-                          (resultSrc == 3'b010) ? pcPlus4   : 
-                          (resultSrc == 3'b011) ? immExt    : 
+                          (resultSrc == 3'b010) ? pcPlus4    : 
+                          (resultSrc == 3'b011) ? immExt     : 
                           pcTarget;
 
 
