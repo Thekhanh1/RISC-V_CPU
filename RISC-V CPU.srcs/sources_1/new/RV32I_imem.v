@@ -24,12 +24,14 @@ module RV32I_imem (
     input [31:0] pc,
     output reg [31:0] instr
 );
-
-  reg [31:0] instrRom[0:255];
+  reg [  31:0] instrRom[0:4095];
+  reg [1023:0] memfile;
 
   initial begin
-    $readmemh("RV32I_program.hex", instrRom);
+    if (!$value$plusargs("MEMFILE=%s", memfile)) memfile = "program.hex";
+    $readmemh(memfile, instrRom);
   end
+
   always @(*) begin
     instr = instrRom[pc>>2];
   end

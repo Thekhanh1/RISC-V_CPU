@@ -16,9 +16,14 @@ for f in os.listdir(path):
 
     if not os.path.isfile(ifile):
         continue
-
-    subprocess.run(["riscv64-unknown-elf-objcopy", "-O", "verilog", ifile, ofile], check = True)
-
+ 
+    subprocess.run([
+        "riscv64-unknown-elf-objcopy",
+        "-O", "verilog",
+        "--verilog-data-width=4",
+        ifile, ofile
+    ], check=True)
+ 
 # moving the unmodified hex into a folder
 
 for f in os.listdir(path):
@@ -29,27 +34,42 @@ for f in os.listdir(path):
 # reformating the hex file for my implementation 
 
 for f in os.listdir(path_hex):
-    mfile = open(os.path.join(path_hex, f), 'r')
-    ofile = open(os.path.join(path_hex, "c_" + f[:-4] + "-configured.hex"), 'w')
-
-    mbuff = mfile.read().splitlines()
-    for line in mbuff:
-        if not line or line[0] == '@': continue
-        buf = ""
-
-        for char in line:
-            if char == ' ':
+    if (f.endswith(".hex")):
+        with open(os.path.join(path_hex, f), 'r') as mfile:
+            mbuff = mfile.read().splitlines()
+    
+        words = {}             # word_index -> hex word token, as-is from objcopy
+        base_addr = None        # first @address seen (word units) == our index 0
+        next_word_addr = None   # running word address of the next expected token
+    
+        for line in mbuff:
+            line = line.strip()
+            if not line:
                 continue
-
-            buf += char
-
-            if len(buf) == 8:
-                bytes_ = [buf[i:i+2] for i in range(0, 8, 2)]
-                ofile.write(''.join(bytes_[::-1]) + '\n')
-                buf = ''
-    mfile.close()
-    ofile.close()
-
+    
+            if line[0] == '@':
+                addr = int(line[1:], 16)   # already word-indexed
+                if base_addr is None:
+                    base_addr = addr
+                next_word_addr = addr
+                continue
+    
+            for tok in line.split():
+                word_index = next_word_addr - base_addr
+                words[word_index] = tok
+                next_word_addr += 1
+        if not words:
+            continue
+    
+        out_path = os.path.join(path_hex, "c_" + f[:-4] + "-configured.hex")
+        with open(out_path, 'w') as ofile:
+            prev_index = None
+            for idx in sorted(words):
+                if prev_index is None or idx != prev_index + 1:
+                    ofile.write(f"@{idx:x}\n")   # gap -> tell $readmemh to jump
+                ofile.write(words[idx] + "\n")
+                prev_index = idx
+ 
 # moving the reformatted file into a folder
 
 for f in os.listdir(path_hex):

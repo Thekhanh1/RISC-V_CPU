@@ -25,14 +25,17 @@ module RV32I_dmem (
     input memWe,
     input [31:0] aluResult,
     input [31:0] writeData,
-    output reg [31:0] readData
+    output [31:0] readData
 );
+  reg [  31:0] dataRam [0:4095];
+  reg [1023:0] memfile;
 
-  reg [31:0] dataRam[0:255];
-
-  always @(*) begin
-    readData = dataRam[aluResult>>2];
+  initial begin
+    if (!$value$plusargs("MEMFILE=%s", memfile)) memfile = "program.hex";
+    $readmemh(memfile, dataRam);
   end
+
+  assign readData = dataRam[aluResult>>2];
 
   always @(posedge clk) begin
     if (memWe == 1'b1) begin
